@@ -1,0 +1,57 @@
+.modalAutenticacion {
+    --modal-background: var(--mantine-color-gray-0);
+    --modal-shadow: var(--mantine-shadow-lg);
+  
+    background-color: var(--modal-background);
+    border-radius: var(--mantine-radius-md);
+    box-shadow: var(--modal-shadow);
+    padding: 24px;
+  }
+  
+  .modalTitulo {
+    font-size: var(--mantine-font-size-lg);
+    font-weight: var(--mantine-font-weight-bold);
+    color: var(--mantine-color-dark-9);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .inputCampo {
+    font-size: var(--mantine-font-size-sm);
+    color: var(--mantine-color-dark-7);
+  }
+  
+  .botonGrupo {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .botonCerrar {
+    background-color: var(--mantine-color-gray-2);
+    color: var(--mantine-color-dark-7);
+    border: 1px solid var(--mantine-color-gray-4);
+    border-radius: var(--mantine-radius-sm);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .botonCerrar:hover {
+    background-color: var(--mantine-color-gray-3);
+  }
+  
+  .botonEnviar {
+    background-color: var(--mantine-color-blue-6);
+    color: var(--mantine-color-white);
+    border: none;
+    border-radius: var(--mantine-radius-sm);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .botonEnviar:hover {
+    background-color: var(--mantine-color-blue-7);
+  }
+  

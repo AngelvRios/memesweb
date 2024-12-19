@@ -1,0 +1,40 @@
+.contenedor {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .loader {
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .contenedorBoton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px; /* Espaciado entre botones */
+  }
+  
+  .cargarMas {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: var(--mantine-font-size-md);
+    font-weight: var(--mantine-font-weight-semibold);
+    color: var(--mantine-color-dark-7);
+    border: 1px solid var(--mantine-color-gray-4);
+    border-radius: var(--mantine-radius-sm);
+    transition: all 0.3s ease;
+  }
+  
+  .cargarMas:hover {
+    background-color: var(--mantine-color-gray-0);
+    border-color: var(--mantine-color-gray-5);
+  }
+  
+  .cargarMas:disabled {
+    background-color: var(--mantine-color-gray-1);
+    color: var(--mantine-color-gray-5);
+    cursor: not-allowed;
+  }
+  
