@@ -1,78 +1,53 @@
-import { useState, useContext } from "react";
-import { Container, Grid, Button, Loader } from "@mantine/core";
-import ElementoMeme from "../../components/ElementoMeme/ElementoMeme";
-import ModalImagen from "../../components/ModalImagen/ModalImagen";
-import ModalAutenticacion from "../../components/ModalAutenticacion/ModalAutenticacion";
-import ModalRegistro from "../../components/ModalRegistro/ModalRegistro";
-import { ContextoAutenticacion } from "../../contexto/ContextoAutenticacion";
-import useMemes from "../../hooks/useMemes";
-import estilos from './EstilosInicio.module.css';
+import React, { useState, useEffect } from "react";
+import { Button, Group } from "@mantine/core";
+import ModalAutenticacion from "../../components/ModalAutenticacion/ModalAutenticacion.jsx";
+import ModalRegistro from "../../components/ModalRegistro/ModalRegistro.jsx";
+import ElementoMeme from "../../components/ElementoMeme/ElementoMeme.jsx";
+import { obtenerMemes } from "../../servicios/memes"; // Asegúrate de importar la función
 
-const Inicio = () => {
-  const contexto = useContext(ContextoAutenticacion);
-  const { estaAutenticado } = contexto;
-  const { memes, estaCargando, cargarMasMemes } = useMemes();
+export default function Inicio() {
+    const [memes, setMemes] = useState([]); // Inicializa como un array vacío
+    const [visibleAuth, setVisibleAuth] = useState(false);
+    const [visibleRegister, setVisibleRegister] = useState(false);
+    const [count, setCount] = useState(1); // Cambia a 1 para empezar desde la primera página
 
-  const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
-  const [modalImagenVisible, setModalImagenVisible] = useState(false);
-  const [modalRegistroVisible, setModalRegistroVisible] = useState(false);
-  const [modalAutenticacionVisible, setModalAutenticacionVisible] = useState(false);
+    useEffect(() => {
+        fetchMemes();
+    }, [count]);
 
-  const manejarPresionarImagen = (imgUrl) => {
-    setImagenSeleccionada(imgUrl);
-    setModalImagenVisible(true);
-  };
+    const fetchMemes = async () => {
+        const [data, error] = await obtenerMemes(count, 10);
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(data); // Verifica la respuesta aquí
+            if (Array.isArray(data)) {
+                setMemes(data); // Usa data directamente si es un array
+            } else {
+                console.error("No se encontraron memes en la respuesta:", data);
+            }
+        }
+    };
 
-  return (
-    <Container className={estilos.contenedor}>
-      <Grid gutter="md">
-        {memes.map((meme) => (
-          <Grid.Col span={4} key={meme._id}>
-            <ElementoMeme meme={meme} manejarPresionarImagen={manejarPresionarImagen} />
-          </Grid.Col>
-        ))}
-      </Grid>
+    return (
+        <div>
+            <Group position="apart" style={{ padding: "10px" }}>
+                <Button onClick={() => setVisibleAuth(true)}>Iniciar Sesión</Button>
+                <Button onClick={() => setVisibleRegister(true)}>Registrarse</Button>
+            </Group>
 
-      {estaCargando && <Loader size="xl" className={estilos.loader} />}
+            <div style={{ display: "grid", gap: "10px", gridTemplateColumns: "repeat(2, 1fr)", padding: "10px" }}>
+                {memes.map((meme) => (
+                    <ElementoMeme key={meme._id} meme={meme} />
+                ))}
+            </div>
 
-      <ModalImagen
-        urlImagen={imagenSeleccionada}
-        visible={modalImagenVisible}
-        setVisible={setModalImagenVisible}
-      />
+            <Group position="center">
+                <Button onClick={() => setCount((prev) => prev + 1)}>Cargar más memes</Button>
+            </Group>
 
-      <ModalRegistro
-        visible={modalRegistroVisible}
-        setVisible={setModalRegistroVisible}
-      />
-
-      <ModalAutenticacion
-        visible={modalAutenticacionVisible}
-        setVisible={setModalAutenticacionVisible}
-      />
-      
-      <div className={estilos.contenedorBoton}>
-        <Button
-          variant="outline"
-          className={estilos.cargarMas}
-          onClick={cargarMasMemes}
-          disabled={estaCargando}
-        >
-          Cargar más memes
-        </Button>
-        {!estaAutenticado && (
-          <>
-            <Button onClick={() => setModalAutenticacionVisible(true)}>
-              Iniciar sesión
-            </Button>
-            <Button onClick={() => setModalRegistroVisible(true)}>
-              Registrarse
-            </Button>
-          </>
-        )}
-      </div>
-    </Container>
-  );
-};
-
-export default Inicio;
+            <ModalAutenticacion visible={visibleAuth} actualizaVisibilidad={setVisibleAuth} />
+            <ModalRegistro visible={visibleRegister} actualizaVisibilidad={setVisibleRegister} />
+        </div>
+    );
+}

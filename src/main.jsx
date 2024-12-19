@@ -1,16 +1,11 @@
 import React from "react";
-import { MantineProvider } from "@mantine/core";
-import Inicio from "./paginas/inicio/inicio.jsx";
-import ProveedorAutenticacion from "./contexto/ContextoAutenticacion.jsx";
-import MallaCurricular from "./components/MallaCurricular";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 
-export default function App() {
-    return (
-        <MantineProvider withGlobalStyles withNormalizeCSS>
-            <ProveedorAutenticacion>
-                <Inicio />
-                <MallaCurricular />
-            </ProveedorAutenticacion>
-        </MantineProvider>
-    );
-}
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
